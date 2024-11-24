@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-dotnet
+  labels:
+    app: hello-dotnet
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-dotnet
+  template:
+    metadata:
+      labels:
+        app: hello-dotnet
+    spec:
+      containers:
+        - name: hello-dotnet
+          image: hello-dotnet:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: hello-dotnet-config
+          resources:
+            limits:
+              memory: 100Mi
+              cpu: 256m
+            requests:
+              memory: 60Mi
+              cpu: 100m
+          livenessProbe:
+            httpGet:
+              path: "/healthz"
+              port: 8080
+      restartPolicy: Always
