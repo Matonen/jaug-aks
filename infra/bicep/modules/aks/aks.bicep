@@ -84,5 +84,18 @@ resource aksManagedNodeOSUpgradeSchedule 'Microsoft.ContainerService/managedClus
   }
 }
 
+resource flux 'Microsoft.KubernetesConfiguration/extensions@2023-05-01' = {
+  name: 'flux'
+  scope: aks
+  properties: {
+    extensionType: 'microsoft.flux'
+    scope: {
+      cluster: {
+        releaseNamespace: 'flux-system'
+      }
+    }
+    autoUpgradeMinorVersion: true
+  }
+}
 
 output resourceId string = aks.id

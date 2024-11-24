@@ -6,7 +6,7 @@ param solution string
 
 param location string = deployment().location
 
-param clusterAdmins string[] = []
+param clusterAdmins string[]
 
 resource rg 'Microsoft.Resources/resourceGroups@2023-07-01' = {
   name: 'rg-${solution}-${env}'
