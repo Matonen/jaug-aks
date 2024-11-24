@@ -10,6 +10,8 @@ param gitUrl string
 
 param kustomizations Kustomization[]
 
+param branchName string
+
 @secure()
 param gitUsername string
 
@@ -34,6 +36,7 @@ module gitOps '../../modules/aks/gitops.bicep' = {
     kustomizations: kustomizations
     gitPat: gitPat
     gitUsername: gitUsername
+    branchName: branchName
   }
   scope: rg
 }
