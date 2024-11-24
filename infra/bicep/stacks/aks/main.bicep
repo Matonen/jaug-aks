@@ -6,6 +6,8 @@ param solution string
 
 param location string = deployment().location
 
+param gitHubOrganization string
+param gitHubRepository string
 param clusterAdmins string[]
 
 resource rg 'Microsoft.Resources/resourceGroups@2023-07-01' = {
@@ -22,10 +24,21 @@ module aks '../../modules/aks/aks.bicep' = {
   scope: rg
 }
 
+module githubOidc '../../modules/aks/github-oidc.bicep' = {
+  name: 'githubOidc'
+  params: {
+    name: 'id-github-${solution}-${env}'
+    location: location
+    organization: gitHubOrganization
+    repository: gitHubRepository
+  }
+  scope: rg
+}
+
 module adminRoleAssignment '../../modules/aks/role-assignment.bicep' = {
   name: 'adminRoleAssignment'
   params: {
-    principalIds: clusterAdmins
+    principalIds: union(clusterAdmins, [githubOidc.outputs.principalId])
     resourceId: aks.outputs.resourceId
     roleName: 'Azure Kubernetes Service RBAC Cluster Admin'
   }
