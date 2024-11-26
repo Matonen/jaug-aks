@@ -9,4 +9,4 @@ resources:
 images:
   - name: hello-dotnet
     newName: mcr.microsoft.com/dotnet/samples
-    newTag: aspnetapp-chiseled-9.0
+    newTag: aspnetapp-chiseled-8.0
